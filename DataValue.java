@@ -1,3 +1,5 @@
+import javax.xml.crypto.Data;
+
 /**
  * Interface that defines the data types for the SILLY language. 
  *   @author Dave Reed

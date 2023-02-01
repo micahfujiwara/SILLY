@@ -27,8 +27,7 @@ public class While extends Statement {
      * Executes the current while statement.
      */
     public void execute() throws Exception {
-        while (this.expr.evaluate().getType() == DataValue.Type.BOOLEAN_VALUE
-                && ((Boolean) (this.expr.evaluate().getValue()))) {
+        while (this.expr.evaluate().getType() == DataValue.Type.BOOLEAN_VALUE && ((Boolean) (this.expr.evaluate().getValue()))) {
             this.body.execute();
         }
         if (this.expr.evaluate().getType() != DataValue.Type.BOOLEAN_VALUE) {

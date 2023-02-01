@@ -24,6 +24,9 @@ public abstract class Statement {
         else if (first.toString().equals("while")) {
             return new While(input);
         }         
+        else if (first.toString().equals("do")){
+            return new Do(input);
+        }
         else if (first.toString().equals("int") ||
                  first.toString().equals("str") ||
                  first.toString().equals("boo")) {

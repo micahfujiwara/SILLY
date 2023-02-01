@@ -114,12 +114,13 @@ public class Expression {
                 }
                 
                 else if (lhs.getType() == DataValue.Type.STRING_VALUE) {
-                if (op.toString().equals("+")) {
-                    String str1 = lhs.toString();
-                    String str2 = rhs.toString();
-                    return new StringValue(str1.substring(0, str1.length() - 1) + str2.substring(1));
+                    if (op.toString().equals("+")) {
+                        String str1 = lhs.toString();
+                        String str2 = rhs.toString();
+                        return new StringValue(str1.substring(0, str1.length() - 1) + str2.substring(1));
+                    }
                 }
-                
+
                 else if (lhs.getType() == DataValue.Type.INTEGER_VALUE) {
                     int num1 = ((Integer) (lhs.getValue()));
                     int num2 = ((Integer) (rhs.getValue()));
@@ -160,22 +161,18 @@ public class Expression {
                         return new BooleanValue(b1 || b2);
                     }
                 }
+            } 
+            else if (lhs.getType() == DataValue.Type.STRING_VALUE && rhs.getType() == DataValue.Type.INTEGER_VALUE){
+                if (op.toString().equals("@")){
+                    String testWord = lhs.toString();
+                    int indexKey = Integer.parseInt(rhs.toString());
+                    return new StringValue(testWord.substring(indexKey+1, indexKey+2));
+                }
             }
-        } 
-
-        else if (lhs.getType() == DataValue.Type.STRING_VALUE && rhs.getType() == DataValue.Type.INTEGER_VALUE){
-            System.out.println("inside lhs == string and rhs == int");
-            if (op.toString().equals("@")){
-                String testWord = lhs.toString();
-                int indexKey = Integer.parseInt(rhs.toString());
-                //int indexKey = entireString.indexOf("@");
-                //String testWord = entireString.substring(0, indexKey);
-                //int index = Integer.parseInt(entireString.substring(indexKey+1));
-                return new StringValue(testWord.substring(indexKey+1, indexKey+2));
-            }
+            
+            throw new Exception("RUNTIME ERROR: Type mismatch in binary expression");
         }
-        throw new Exception("RUNTIME ERROR: Type mismatch in binary expression");
-        }
+        
         return null;
     }
 
