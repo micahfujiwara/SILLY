@@ -42,8 +42,7 @@ public class TokenStream {
             
             int index = 1;
             if (Character.isLetter(this.buffer.charAt(0))) {
-            	while (index < this.buffer.length() &&
-            			(Character.isLetter(this.buffer.charAt(index)) || Character.isDigit(this.buffer.charAt(index)))) {
+            	while (index < this.buffer.length() && (Character.isLetter(this.buffer.charAt(index)) || Character.isDigit(this.buffer.charAt(index)))) {
             		index++;
             	}
         	}

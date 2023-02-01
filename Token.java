@@ -10,10 +10,10 @@ public class Token {
     
     public static String[] keywords =   { "{", "}", "(", ")", "=", "output",
                                           "int", "str", "boo", "if", "then", 
-                                          "noelse", "while", "do"};   
-    public static String[] unary_ops =  { "not" };    
+                                          "noelse", "else", "while", "do"};   
+    public static String[] unary_ops =  { "not", "#"};    
     public static String[] binary_ops = { "+", "-", "*", "/", "%", "^", "==", "!=", 
-                                          ">", ">=", "<", "<=", "and", "or"};    
+                                          ">", ">=", "<", "<=", "and", "or", "@"};    
     public static enum Type { KEYWORD, UNARY_OP, BINARY_OP, IDENTIFIER, UNKNOWN,
                               INTEGER_LITERAL, STRING_LITERAL, BOOLEAN_LITERAL }
     

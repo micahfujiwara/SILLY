@@ -33,13 +33,13 @@ public class Expression {
     		    throw new Exception("SYNTAX ERROR: Malformed expression");
     		}
         }
-    	else if (this.tok.getType() != Token.Type.IDENTIFIER &&
+    	    else if (this.tok.getType() != Token.Type.IDENTIFIER &&
                 this.tok.getType() != Token.Type.INTEGER_LITERAL &&    
                 this.tok.getType() != Token.Type.STRING_LITERAL &&
                 this.tok.getType() != Token.Type.BOOLEAN_LITERAL) {
-          throw new Exception("SYNTAX ERROR: malformed expression" + this.tok);
-    	}
-    }
+            throw new Exception("SYNTAX ERROR: malformed expression" + this.tok);
+    	    }
+        }
 
     /**
      * Evaluates the current expression.
@@ -52,14 +52,22 @@ public class Expression {
                     throw new Exception("RUNTIME ERROR: variable " + this.tok + " is undeclared");
                 }
                 return Interpreter.MEMORY.lookupValue(this.tok);
-            } else if (this.tok.getType() == Token.Type.INTEGER_LITERAL) {
+            } 
+            
+            else if (this.tok.getType() == Token.Type.INTEGER_LITERAL) {
                 return new IntegerValue(Integer.valueOf(this.tok.toString()));
-            } else if (this.tok.getType() == Token.Type.STRING_LITERAL) {
+            } 
+            
+            else if (this.tok.getType() == Token.Type.STRING_LITERAL) {
                 return new StringValue(this.tok.toString());
-            } else if (this.tok.getType() == Token.Type.BOOLEAN_LITERAL) {
+            } 
+            
+            else if (this.tok.getType() == Token.Type.BOOLEAN_LITERAL) {
                 return new BooleanValue(Boolean.valueOf(this.tok.toString()));
             }
-        } else if (this.op.getType() == Token.Type.UNARY_OP) {
+        } 
+        
+        else if (this.op.getType() == Token.Type.UNARY_OP) {
             DataValue rhs = this.expr2.evaluate();
             
             if (this.op.toString().equals("not")) {
@@ -67,61 +75,106 @@ public class Expression {
                     boolean b2 = ((Boolean) (rhs.getValue()));
                     return new BooleanValue(!b2);
                 }
-            } 
+            }
+            
+            if (this.op.toString().equals("#")){
+                if(rhs.getType() == DataValue.Type.STRING_VALUE){
+                    String storeSize = ((String) (rhs.getValue()));
+                    if (storeSize.charAt(0) == '"') {
+                        storeSize =  storeSize.substring(1, storeSize.length()-1);
+                    }
+                    return new IntegerValue(storeSize.length());
+                }
+            }
             throw new Exception("RUNTIME ERROR: Type mismatch in unary expression");
-        } else if (this.op.getType() == Token.Type.BINARY_OP) {
+        } 
+        
+        else if (this.op.getType() == Token.Type.BINARY_OP) {
             DataValue lhs = this.expr1.evaluate();
             DataValue rhs = this.expr2.evaluate();
 
             if (lhs.getType() == rhs.getType()) {
                 if (op.toString().equals("==")) {
                     return new BooleanValue(lhs.compareTo(rhs) == 0);
-                } else if (op.toString().equals("!=")) {
+                } 
+                else if (op.toString().equals("!=")) {
                     return new BooleanValue(lhs.compareTo(rhs) != 0);
-                } else if (op.toString().equals(">")) {
+                } 
+                else if (op.toString().equals(">")) {
                     return new BooleanValue(lhs.compareTo(rhs) > 0);
-                } else if (op.toString().equals(">=")) {
+                } 
+                else if (op.toString().equals(">=")) {
                     return new BooleanValue(lhs.compareTo(rhs) >= 0);
-                } else if (op.toString().equals("<")) {
+                } 
+                else if (op.toString().equals("<")) {
                     return new BooleanValue(lhs.compareTo(rhs) < 0);
-                } else if (op.toString().equals("<=")) {
+                } 
+                else if (op.toString().equals("<=")) {
                     return new BooleanValue(lhs.compareTo(rhs) <= 0);
-                } else if (lhs.getType() == DataValue.Type.STRING_VALUE) {
-                    if (op.toString().equals("+")) {
-                        String str1 = lhs.toString();
-                        String str2 = rhs.toString();
-                        return new StringValue(str1.substring(0, str1.length() - 1)
-                                + str2.substring(1));
-                    }
-                } else if (lhs.getType() == DataValue.Type.INTEGER_VALUE) {
+                }
+                
+                else if (lhs.getType() == DataValue.Type.STRING_VALUE) {
+                if (op.toString().equals("+")) {
+                    String str1 = lhs.toString();
+                    String str2 = rhs.toString();
+                    return new StringValue(str1.substring(0, str1.length() - 1) + str2.substring(1));
+                }
+                
+                else if (lhs.getType() == DataValue.Type.INTEGER_VALUE) {
                     int num1 = ((Integer) (lhs.getValue()));
                     int num2 = ((Integer) (rhs.getValue()));
 
                     if (op.toString().equals("+")) {
                         return new IntegerValue(num1 + num2);
-                    } else if (op.toString().equals("-")) {
+                    } 
+                    
+                    else if (op.toString().equals("-")) {
                         return new IntegerValue(num1 - num2);
-                    } else if (op.toString().equals("*")) {
+                    } 
+                    
+                    else if (op.toString().equals("*")) {
                         return new IntegerValue(num1 * num2);
-                    } else if (op.toString().equals("/")) {
+                    } 
+                    
+                    else if (op.toString().equals("/")) {
                         return new IntegerValue(num1 / num2);
-                    } else if (op.toString().equals("%")) {
+                    } 
+                    
+                    else if (op.toString().equals("%")) {
                         return new IntegerValue(num1 % num2);
-                    } else if (op.toString().equals("^")) {
+                    } 
+                    
+                    else if (op.toString().equals("^")) {
                         return new IntegerValue((int)Math.pow(num1, num2));
                     }
-                } else if (lhs.getType() == DataValue.Type.BOOLEAN_VALUE) {
+                } 
+                
+                else if (lhs.getType() == DataValue.Type.BOOLEAN_VALUE) {
                     boolean b1 = ((Boolean) (lhs.getValue()));
                     boolean b2 = ((Boolean) (rhs.getValue()));
 
                     if (op.toString().equals("and")) {
                         return new BooleanValue(b1 && b2);
-                    } else if (op.toString().equals("or")) {
+                    } 
+                    else if (op.toString().equals("or")) {
                         return new BooleanValue(b1 || b2);
                     }
                 }
             }
-            throw new Exception("RUNTIME ERROR: Type mismatch in binary expression");
+        } 
+
+        else if (lhs.getType() == DataValue.Type.STRING_VALUE && rhs.getType() == DataValue.Type.INTEGER_VALUE){
+            System.out.println("inside lhs == string and rhs == int");
+            if (op.toString().equals("@")){
+                String testWord = lhs.toString();
+                int indexKey = Integer.parseInt(rhs.toString());
+                //int indexKey = entireString.indexOf("@");
+                //String testWord = entireString.substring(0, indexKey);
+                //int index = Integer.parseInt(entireString.substring(indexKey+1));
+                return new StringValue(testWord.substring(indexKey+1, indexKey+2));
+            }
+        }
+        throw new Exception("RUNTIME ERROR: Type mismatch in binary expression");
         }
         return null;
     }

@@ -13,6 +13,7 @@ public class VariableBinding {
      */
     public VariableBinding(DataValue.Type t) {
     	this.type = t;
+        //-1 is equal to null 
     	this.address = -1;
     }
     
