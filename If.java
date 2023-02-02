@@ -6,7 +6,8 @@
 public class If extends Statement {
     private Expression test;
     private Compound ifBody;
-
+    private Compound elseBody;
+    private boolean elseCheck;
     /**
      * Reads in an if statement from the specified stream
      *   @param input the stream to be read from
@@ -21,8 +22,14 @@ public class If extends Statement {
             throw new Exception("SYNTAX ERROR: Malformed if statement");
         }
         this.ifBody = new Compound(input);
+
+   
+        if (input.next().toString().equals("else")){
+            this.elseBody = new Compound(input);
+            elseCheck = true;
+        }
         
-        if (!input.next().toString().equals("noelse")) {
+        else if (!input.next().toString().equals("noelse") && !input.next().toString().equals("else")) {
             throw new Exception("SYNTAX ERROR: Malformed if statement");
         }
         
@@ -40,6 +47,10 @@ public class If extends Statement {
         if (((Boolean) test.getValue())) {
             this.ifBody.execute();
         } 
+
+       else if (!((Boolean) test.getValue())){
+            this.elseBody.execute();
+        }
     }
 
     /**
@@ -47,6 +58,9 @@ public class If extends Statement {
      *   @return the String representation of this statement
      */
     public String toString() {
+        if (elseCheck == true){
+            return "if " + this.test + " then\n" + this.ifBody + "\nelse\n" + this.elseBody;
+        }
         return "if " + this.test + " then\n" + this.ifBody + "\nnoelse";
     }
 }

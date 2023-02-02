@@ -20,7 +20,7 @@ public abstract class Statement {
         }  
         else if (first.toString().equals("if")) {
             return new If(input);
-        }                
+        }        
         else if (first.toString().equals("while")) {
             return new While(input);
         }         

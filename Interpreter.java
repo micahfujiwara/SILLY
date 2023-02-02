@@ -11,7 +11,6 @@ public class Interpreter {
         while (true) {
             System.out.print(">>> ");
             Statement stmt = Statement.getStatement(input);
-            //System.out.println(stmt);
             stmt.execute();
         } 
     }

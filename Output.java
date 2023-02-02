@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * Derived class that represents an output statement in the SILLY language.
  *   @author Dave Reed
@@ -5,6 +8,8 @@
  */
 public class Output extends Statement {
 	private Expression expr;
+    private int numOfExpr;
+    private ArrayList<String> exprList = new ArrayList<>();
 
     /**
      * Reads in an output statement from the specified TokenStream.
@@ -14,8 +19,21 @@ public class Output extends Statement {
     	if (!input.next().toString().equals("output")) {
             throw new Exception("SYNTAX ERROR: Malformed output statement");
         } 
-    	
-    	this.expr = new Expression(input);
+
+        if (input.lookAhead().toString().equals("{")){
+            this.expr = new Expression(input);
+            if (input.lookAhead().toString().equals(",")){
+                System.out.println("theres a comma");
+            }
+            String[] exprArray = input.lookAhead().toString().split(",");
+            numOfExpr = exprArray.length;
+            Collections.addAll(exprList, exprArray);
+            System.out.println(exprList);
+        }
+
+        else{
+            this.expr = new Expression(input);
+        }
     }
 
     /**
@@ -38,5 +56,4 @@ public class Output extends Statement {
     	return "output " + this.expr;
     }   
 }
-
 
