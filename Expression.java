@@ -14,7 +14,8 @@ public class Expression {
      */
     public Expression(TokenStream input) throws Exception {
     	this.tok = input.next();
-    	if (this.tok.toString().equals("(")) {
+
+        if (this.tok.toString().equals("(")) {
     		if (input.lookAhead().getType() == Token.Type.UNARY_OP) {
     			this.op = input.next();
     			this.expr2 = new Expression(input);

@@ -8,6 +8,7 @@ public class If extends Statement {
     private Compound ifBody;
     private Compound elseBody;
     private boolean elseCheck;
+
     /**
      * Reads in an if statement from the specified stream
      *   @param input the stream to be read from
@@ -23,16 +24,17 @@ public class If extends Statement {
         }
         this.ifBody = new Compound(input);
 
-   
-        if (input.next().toString().equals("else")){
+        if (input.lookAhead().toString().equals("else")){
+            System.out.println("program has else statement");
+            input.next();
             this.elseBody = new Compound(input);
-            elseCheck = true;
+            this.elseCheck = true;
         }
         
-        else if (!input.next().toString().equals("noelse") && !input.next().toString().equals("else")) {
+        else if (!input.next().toString().equals("noelse")){
+            this.elseCheck = false;
             throw new Exception("SYNTAX ERROR: Malformed if statement");
         }
-        
     }
 
     /**
@@ -40,16 +42,19 @@ public class If extends Statement {
      */
     public void execute() throws Exception {
         DataValue test = this.test.evaluate();
+        System.out.println("execute()");
         if (test.getType() != DataValue.Type.BOOLEAN_VALUE) {
             throw new Exception("RUNTIME ERROR: If statement requires Boolean test.");
         } 
         
         if (((Boolean) test.getValue())) {
             this.ifBody.execute();
+            System.out.println("If.execute()");
         } 
 
-       else if (!((Boolean) test.getValue())){
+        if (!((Boolean) test.getValue())){
             this.elseBody.execute();
+            System.out.println("else.execute()");
         }
     }
 
@@ -58,7 +63,7 @@ public class If extends Statement {
      *   @return the String representation of this statement
      */
     public String toString() {
-        if (elseCheck == true){
+        if (this.elseCheck == true){
             return "if " + this.test + " then\n" + this.ifBody + "\nelse\n" + this.elseBody;
         }
         return "if " + this.test + " then\n" + this.ifBody + "\nnoelse";
