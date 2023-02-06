@@ -8,6 +8,7 @@ import java.util.Collections;
  */
 public class Output extends Statement {
 	private Expression expr;
+    private boolean multExpr;
     private int numOfExpr;
     private ArrayList<String> exprList = new ArrayList<>();
 
@@ -20,17 +21,22 @@ public class Output extends Statement {
             throw new Exception("SYNTAX ERROR: Malformed output statement");
         } 
 
+         
         if (input.lookAhead().toString().equals("{")){
-            this.expr = new Expression(input);
+            input.next();
             if (input.lookAhead().toString().equals(",")){
+                multExpr = true;
                 System.out.println("theres a comma");
+                String[] exprArray = input.lookAhead().toString().split(",");
+                numOfExpr = exprArray.length;
+                for (int i = 0; i < numOfExpr; i++){
+                    TokenStream tempinput = exprArray[i];
+                    this.expr = new Expression(tempinput);
+                }
             }
-            String[] exprArray = input.lookAhead().toString().split(",");
-            numOfExpr = exprArray.length;
-            Collections.addAll(exprList, exprArray);
-            System.out.println(exprList);
-        }
 
+        }
+        
         else{
             this.expr = new Expression(input);
         }
@@ -53,6 +59,13 @@ public class Output extends Statement {
      *   @return the String representation of this statement
      */
     public String toString() {
+        /* 
+        if (multExpr == true){
+            for (int i = 0; i < numOfExpr; i++){
+                return "output " + 
+            }
+        }
+        */
     	return "output " + this.expr;
     }   
 }
