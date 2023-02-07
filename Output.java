@@ -58,6 +58,7 @@ public class Output extends Statement {
                     totalStr += str;
                 }
             }
+            System.out.println(totalStr);
         }
 
         else{
@@ -81,4 +82,3 @@ public class Output extends Statement {
     	return "output " + this.expr;
     }   
 }
-

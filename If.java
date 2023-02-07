@@ -25,7 +25,6 @@ public class If extends Statement {
         this.ifBody = new Compound(input);
 
         if (input.lookAhead().toString().equals("else")){
-            System.out.println("program has else statement");
             input.next();
             this.elseBody = new Compound(input);
             this.elseCheck = true;
@@ -42,19 +41,16 @@ public class If extends Statement {
      */
     public void execute() throws Exception {
         DataValue test = this.test.evaluate();
-        System.out.println("execute()");
         if (test.getType() != DataValue.Type.BOOLEAN_VALUE) {
             throw new Exception("RUNTIME ERROR: If statement requires Boolean test.");
         } 
         
         if (((Boolean) test.getValue())) {
             this.ifBody.execute();
-            System.out.println("If.execute()");
         } 
 
-        if (!((Boolean) test.getValue())){
+        if (!((Boolean) test.getValue()) && elseCheck==true){
             this.elseBody.execute();
-            System.out.println("else.execute()");
         }
     }
 

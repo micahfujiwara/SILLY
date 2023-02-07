@@ -3,3 +3,82 @@ output x
 
 int y = (2 * x)
 output (x + y)
+
+str word = "foo"
+output word
+
+output ((word + "bar") + (word + "biz"))
+
+boo flag = true
+output flag
+
+output (not flag)
+
+if (x < y) then {
+        output "ok"
+        output "still-ok"
+    } noelse
+
+if (x > y) then {
+        output "not-ok"
+        output "still-not-ok"
+    } noelse
+
+int count = 5
+while (count > 0) do {
+        output count
+        count = (count - 1)
+    }
+
+boo stop = false
+int num = 2
+while (not stop) do {
+        output num
+        num = (2 * num)
+        if (num > 1000) then {
+            stop = true
+        } noelse
+    }
+
+output {1, (15 / 3), (true or false), ("ab" + "cd")}
+str text = "banana"
+output {(# text), (text @ 0)}
+
+str reverse = ""
+int i = 0
+while (i < (# text)) do {
+        reverse = ((text @ i) + reverse)
+        i = (i + 1)
+    }
+
+output {text, reverse}
+
+int grade = 88
+if (grade >= 90) then {
+        output "excellent"
+    } else {
+        if (grade >= 75) then {
+            output "good"
+        } else {
+            output "needs_work"
+        } 
+    }
+
+int current = 5
+while (current != 1) do {
+        output current
+        if ((current % 2) == 0) then {
+            current = (current / 2)
+        }
+        else {
+            current = ((3 * current) + 1)
+        }
+    }
+
+output {1, "STUCK"}
+
+int value = 2
+do {
+        output value
+        value = (2 * value)
+    } until (value > 1000)
