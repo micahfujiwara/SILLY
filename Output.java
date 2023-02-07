@@ -32,6 +32,7 @@ public class Output extends Statement {
                     input.next();
                 }
             }
+            input.next();
         }
         else{
             this.expr = new Expression(input);
@@ -48,14 +49,15 @@ public class Output extends Statement {
                 if (str.charAt(0) == '"'){
                     str = str.substring(1, str.length()-1);
                 }
+
                 if (i <= exprList.size()-2){
                     totalStr += str + " ";
                 }
+
                 if (i==exprList.size()-1){
                     totalStr += str;
                 }
             }
-            System.out.println(totalStr);
         }
 
         else{
@@ -74,7 +76,7 @@ public class Output extends Statement {
      */
     public String toString() { 
         if (multExpr == true){
-            return "ouput " + this.totalStr;
+            return "output " + totalStr;
         }
     	return "output " + this.expr;
     }   
