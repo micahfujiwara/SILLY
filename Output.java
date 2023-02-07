@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Derived class that represents an output statement in the SILLY language.
@@ -10,6 +9,7 @@ public class Output extends Statement {
 	private Expression expr;
     private boolean multExpr;
     private ArrayList<Expression> exprList = new ArrayList<>();
+    private String totalStr = "";
     private String str = "";
 
     /**
@@ -43,20 +43,29 @@ public class Output extends Statement {
     public void execute() throws Exception {
         if (multExpr == true){
             for (int i = 0; i < exprList.size(); i++){
-                str += exprList.get(i).evaluate().toString() + " ";
-                if (str.charAt(0) == '"') {
-                    str =  str.substring(1, str.length()-1);
+                str = exprList.get(i).evaluate().toString();
+                
+                if (str.charAt(0) == '"'){
+                    str = str.substring(1, str.length()-1);
+                }
+                if (i <= exprList.size()-2){
+                    totalStr += str + " ";
+                }
+                if (i==exprList.size()-1){
+                    totalStr += str;
                 }
             }
+            System.out.println(totalStr);
         }
 
         else{
-            if (str.charAt(0) == '"') {
-                str =  str.substring(1, str.length()-1);
-            }
             str = this.expr.evaluate().toString();
+            if (str.charAt(0) == '"') {
+                str = str.substring(1, str.length()-1);
+            }
+            System.out.println(str);
         }
-        System.out.println(str);
+        
     }
 
     /**
@@ -65,7 +74,7 @@ public class Output extends Statement {
      */
     public String toString() { 
         if (multExpr == true){
-            return "ouput " + str;
+            return "ouput " + this.totalStr;
         }
     	return "output " + this.expr;
     }   

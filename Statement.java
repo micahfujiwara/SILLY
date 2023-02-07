@@ -34,7 +34,8 @@ public abstract class Statement {
         } 
         else if (first.toString().equals("{")) {
             return new Compound(input);
-        }  
+        }
+        
         else if (first.getType() == Token.Type.IDENTIFIER) {
             return new Assignment(input);
         }
