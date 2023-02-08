@@ -9,7 +9,6 @@ public class Output extends Statement {
 	private Expression expr;
     private boolean multExpr;
     private ArrayList<Expression> exprList = new ArrayList<>();
-    private String totalStr = "";
     private String str = "";
 
     /**
@@ -43,6 +42,7 @@ public class Output extends Statement {
      */
     public void execute() throws Exception {
         if (multExpr == true){
+            String totalStr = "";
             for (int i = 0; i < exprList.size(); i++){
                 str = exprList.get(i).evaluate().toString();
                 
@@ -77,7 +77,18 @@ public class Output extends Statement {
      */
     public String toString() { 
         if (multExpr == true){
-            return "output " + totalStr;
+            String all = "";
+            for (int i = 0; i < exprList.size(); i++){
+                if (i <= exprList.size()-2){
+                    this.expr = exprList.get(i);
+                    all += this.expr + ", ";
+                }
+                else if (i==exprList.size()-1){
+                    this.expr = exprList.get(i);
+                    all += this.expr;
+                }
+            }
+            return "output " + "{" + all + "}";
         }
     	return "output " + this.expr;
     }   

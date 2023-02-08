@@ -167,7 +167,7 @@ public class Expression {
                 if (op.toString().equals("@")){
                     String testWord = lhs.toString();
                     int indexKey = Integer.parseInt(rhs.toString());
-                    return new StringValue(testWord.substring(indexKey+1, indexKey+2));
+                    return new StringValue('"' + testWord.substring(indexKey+1, indexKey+2) + '"');
                 }
             }
             
