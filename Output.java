@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Output extends Statement {
 	private Expression expr;
-    private boolean multExpr;
+    private boolean multExpr = false;
     private ArrayList<Expression> exprList = new ArrayList<>();
     private String str = "";
 
@@ -29,6 +29,10 @@ public class Output extends Statement {
 
                 if (input.lookAhead().toString().equals(",")){
                     input.next();
+                }
+
+                else if (!input.lookAhead().toString().equals("}")){
+                    throw new Exception("SYNTAX ERROR: NOT A VALID OUTPUT EXPRESSION");
                 }
             }
             input.next();

@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * Class that defines the memory space for the SILLY interpreter.
@@ -7,23 +7,36 @@ import java.util.HashMap;
  *   @version 1/15/23
  */
 public class MemorySpace {
-    private HashMap<Token, VariableBinding> stackSegment;
     private ArrayList<DataValue> heapSegment;
+    private Stack<Scope> stackSegment;
 
     /**
      * Constructs an empty memory space.
      */
     public MemorySpace() {
-        this.stackSegment = new HashMap<Token, VariableBinding>();
+        this.stackSegment = new Stack<Scope>();
         this.heapSegment = new ArrayList<DataValue>();
+        stackSegment.add(new Scope(null));
     }
     
     /**
      * Declares a variable (without storing an actual value).
      *   @param variable the variable to be declared
+     * @throws Exception
      */
-    public void declareVariable(Token variable, DataValue.Type type) {
-        this.stackSegment.put(variable, new VariableBinding(type));
+    public void declareVariable(Token variable, DataValue.Type type) throws Exception{
+        Scope ptr = stackSegment.peek();
+        ptr.declareVariable(variable, type);
+    }
+
+    /**
+     * 
+     * @param variable
+     * @return
+     */
+    public boolean isDeclaredLocal(Token variable){
+        Scope ptr = stackSegment.peek();
+        return ptr.isDeclared(variable);
     }
     
     /** 
@@ -32,8 +45,16 @@ public class MemorySpace {
      * @return true if it is declared and/or assigned
      */
     public boolean isDeclared(Token variable) {
-    	return this.stackSegment.containsKey(variable);
+        Scope ptr = stackSegment.peek();
+        while(ptr!=null){
+            if (ptr.isDeclared(variable)){
+                return true;
+            }
+            ptr = ptr.parent;
+        }
+        return false;
     }
+    
     
     /**
      * Stores a variable/value in the stack segment.
@@ -41,8 +62,15 @@ public class MemorySpace {
      *   @param val the value to be stored under that name
      */
     public void storeValue(Token variable, DataValue val)  {
-    	int addr = this.getHeapAddress(val);
-    	this.stackSegment.get(variable).setAddress(addr);
+        Scope ptr = stackSegment.peek();
+        while (ptr!=null){
+            if (ptr.isDeclared(variable)){
+                int addr = this.getHeapAddress(val);
+                ptr.storeAddress(variable, addr);
+                break;
+            }
+            ptr = ptr.parent;
+        }
     }
     
     /**
@@ -51,8 +79,15 @@ public class MemorySpace {
      *   @return the value associated with that variable
      */      
     public DataValue lookupValue(Token variable) {
-    	int addr = this.stackSegment.get(variable).getAddress();
-    	return this.heapSegment.get(addr);
+        Scope ptr = stackSegment.peek();
+        while (ptr!=null){
+            if (ptr.isDeclared(variable)){
+                int addr = ptr.lookupAddress(variable);
+                return this.heapSegment.get(addr);           
+            }
+            ptr = ptr.parent;
+        }
+        return null;
     }
 
     /**
@@ -61,17 +96,32 @@ public class MemorySpace {
      *   @return the type associated with that variable
      */ 
     public DataValue.Type lookupType(Token variable) {
-    	return this.stackSegment.get(variable).getType();
+        Scope ptr = stackSegment.peek();
+        while (ptr!= null){
+            if (ptr.isDeclared(variable)){
+                return ptr.lookupType(variable);
+            }
+            ptr = ptr.parent;
+        }
+        return null;
     }
     
     /////////////////////////////////////////////////////////////////////////////
     
-    private int getHeapAddress(DataValue val) {
+    public int getHeapAddress(DataValue val) {
     	int addr = this.heapSegment.indexOf(val);
     	if (addr == -1) {
     		addr = this.heapSegment.size();
     		this.heapSegment.add(val);
     	}
     	return addr;
+    }
+
+    public void addScope(){
+        this.stackSegment.add(new Scope(this.stackSegment.peek()));
+    }
+
+    public void endScope(){
+        this.stackSegment.pop();
     }
 }

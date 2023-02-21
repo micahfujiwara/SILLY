@@ -167,6 +167,9 @@ public class Expression {
                 if (op.toString().equals("@")){
                     String testWord = lhs.toString();
                     int indexKey = Integer.parseInt(rhs.toString());
+                    if (indexKey < 0 || indexKey >= testWord.length()){
+                        throw new Exception("SYNTAX ERROR: INDEX OUT OF BOUNDS");
+                    }
                     return new StringValue('"' + testWord.substring(indexKey+1, indexKey+2) + '"');
                 }
             }

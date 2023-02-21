@@ -28,10 +28,10 @@ public class VarDeclaration extends Statement {
      * Executes the current assignment statement.
      */
     public void execute() throws Exception {
-        if (Interpreter.MEMORY.isDeclared(variable)) {
+        if (Interpreter.MEMORY.isDeclaredLocal(variable)) {
             throw new Exception("RUNTIME ERROR: variable " + variable + " already declared");            
         }
-        
+    
         if (this.variableType.toString().equals("int")) {
         	Interpreter.MEMORY.declareVariable(this.variable, DataValue.Type.INTEGER_VALUE);
         }

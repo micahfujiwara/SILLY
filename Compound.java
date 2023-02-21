@@ -16,7 +16,7 @@ public class Compound extends Statement {
         if (!input.next().toString().equals("{")) {
             throw new Exception("SYNTAX ERROR: Malformed compound statement");
         }
-
+        
         this.stmts = new ArrayList<Statement>();
         while (!input.lookAhead().toString().equals("}")) {
             this.stmts.add(Statement.getStatement(input));
@@ -28,9 +28,11 @@ public class Compound extends Statement {
      * Executes the current compound statement.
      */
     public void execute() throws Exception {
+        Interpreter.MEMORY.addScope();
         for (Statement stmt : this.stmts) {
             stmt.execute();
         }
+        Interpreter.MEMORY.endScope();
     }
 
     /**
