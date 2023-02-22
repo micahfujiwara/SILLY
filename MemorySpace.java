@@ -22,17 +22,16 @@ public class MemorySpace {
     /**
      * Declares a variable (without storing an actual value).
      *   @param variable the variable to be declared
-     * @throws Exception
      */
-    public void declareVariable(Token variable, DataValue.Type type) throws Exception{
+    public void declareVariable(Token variable, DataValue.Type type){
         Scope ptr = stackSegment.peek();
         ptr.declareVariable(variable, type);
     }
 
     /**
-     * 
+     * Checks to see if a variable is declared in the scope at the top of the stack
      * @param variable
-     * @return
+     * @return true if declared and/or assigned
      */
     public boolean isDeclaredLocal(Token variable){
         Scope ptr = stackSegment.peek();
@@ -40,7 +39,7 @@ public class MemorySpace {
     }
     
     /** 
-     * Determines if a variable is already declared.
+     * Determines if a variable is already declared in any scope in the stack
      * @param variable the variable to be found
      * @return true if it is declared and/or assigned
      */
@@ -117,10 +116,16 @@ public class MemorySpace {
     	return addr;
     }
 
+    /**
+     * Adds a scope to the stack of scopes
+     */
     public void addScope(){
         this.stackSegment.add(new Scope(this.stackSegment.peek()));
     }
 
+    /**
+     * Pops a scope from the stack of scopes
+     */
     public void endScope(){
         this.stackSegment.pop();
     }

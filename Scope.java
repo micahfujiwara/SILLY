@@ -18,12 +18,11 @@ public class Scope {
      *   @param variable the variable to be declared
      */
     public void declareVariable(Token variable, DataValue.Type type) {
-        //this declares a variable inside of the scope so it is a variable mapping
         this.stackSegment.put(variable, new VariableBinding(type));
     }
     
     /** 
-     * Determines if a variable is already declared.
+     * Determines if a variable is already declared in the scope.
      * @param variable the variable to be found
      * @return true if it is declared and/or assigned
      */
@@ -41,7 +40,7 @@ public class Scope {
     }
     
     /**
-     * Determines the value associated with a variable in memory.
+     * Determines the value address associated with a variable in memory.
      *   @param variable the variable to look up
      *   @return the value associated with that variable
      */      
