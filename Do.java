@@ -25,7 +25,7 @@ public class Do extends Statement {
 
     @Override
      /**
-     * Executes the current while statement.
+     * Executes the current do statement.
      */
     public void execute() throws Exception {
         if (this.expr.evaluate().getType() != DataValue.Type.BOOLEAN_VALUE){
